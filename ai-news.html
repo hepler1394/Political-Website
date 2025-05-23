@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News - Project 2028</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="noise-overlay"></div>
+    <div class="scan-line"></div>
+    
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="preloader-content">
+            <img src="project_2028_logo.png" alt="Project 2028 Logo" class="preloader-logo">
+            <div class="loading-bar-container">
+                <div class="loading-bar"></div>
+            </div>
+            <div class="loading-text">INITIALIZING PROGRESSIVE FUTURE</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="project_2028_logo.png" alt="Project 2028 Logo">
+                </a>
+            </div>
+            <div class="menu-toggle">
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="policies.html">Policies</a></li>
+                <li><a href="recent-news.html">Recent News</a></li>
+                <li><a href="international-news.html">International</a></li>
+                <li><a href="ai-news.html" class="active">AI News</a></li>
+                <li><a href="get-involved.html">Get Involved</a></li>
+            </ul>
+            <div class="nav-cta">
+                <a href="donate.html" class="btn btn-primary">Support</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="page-header-content">
+            <h1>AI <span class="highlight">News</span></h1>
+            <p>The latest developments in artificial intelligence and technology</p>
+        </div>
+        <div class="page-header-image">
+            <img src="ai_news_icon.png" alt="AI News">
+        </div>
+    </section>
+
+    <!-- News Content -->
+    <section class="news-page">
+        <div class="news-filters">
+            <div class="search-bar">
+                <input type="text" placeholder="Search AI news...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="filter-options">
+                <select name="category">
+                    <option value="all">All Categories</option>
+                    <option value="research">Research</option>
+                    <option value="policy">Policy</option>
+                    <option value="ethics">Ethics</option>
+                    <option value="applications">Applications</option>
+                    <option value="industry">Industry</option>
+                </select>
+                <select name="date">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="featured-news">
+            <div class="featured-news-card">
+                <div class="featured-news-image">
+                    <div class="news-tag">Featured</div>
+                    <img src="https://via.placeholder.com/800x500/0a1128/00a8ff?text=AI+Ethics+Framework" alt="AI Ethics Framework">
+                </div>
+                <div class="featured-news-content">
+                    <div class="news-date">May 19, 2028</div>
+                    <h2>Global AI Ethics Framework Adopted by 150 Nations</h2>
+                    <p class="news-excerpt">Landmark agreement establishes universal standards for responsible AI development and deployment.</p>
+                    <p>In a historic moment for technology governance, 150 nations have formally adopted the Global Framework for Ethical Artificial Intelligence at the United Nations AI Summit in Geneva. The comprehensive agreement establishes binding standards for AI development, testing, and deployment across all sectors.</p>
+                    <p>Key provisions of the framework include:</p>
+                    <ul>
+                        <li>Mandatory impact assessments for high-risk AI systems</li>
+                        <li>Prohibition of fully autonomous weapons systems</li>
+                        <li>Requirements for algorithmic transparency and explainability</li>
+                        <li>Establishment of a global AI oversight body with enforcement powers</li>
+                        <li>Protections for human workers displaced by automation</li>
+                    </ul>
+                    <p>"This framework represents a new era in how humanity governs powerful technologies," said Dr. Aisha Nakamura, chair of the UN AI Ethics Commission. "We've established guardrails that will allow us to harness AI's tremendous benefits while protecting human rights, dignity, and agency."</p>
+                    <div class="news-tags">
+                        <span class="tag">Ethics</span>
+                        <span class="tag">Policy</span>
+                        <span class="tag">Global</span>
+                        <span class="tag">Regulation</span>
+                    </div>
+                    <div class="news-share">
+                        <span>Share:</span>
+                        <a href="#" class="share-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="share-icon"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="share-icon"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="share-icon"><i class="fab fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="news-grid">
+            <div class="news-card">
+                <div class="news-image">
+                    <img src="https://via.placeholder.com/400x300/0a1128/00a8ff?text=AI+Healthcare" alt="AI Healthcare">
+                </div>
+                <div class="news-info">
+                    <div class="news-date">May 17, 2028</div>
+                    <h3>AI Diagnostic System Achieves 99.8% Accuracy in Cancer Detection</h3>
+                    <p>Revolutionary neural network outperforms human pathologists in large-scale clinical trial.</p>
+                    <p>The National Institutes of Health announced today that an AI diagnostic system developed by researchers at Stanford and MIT has achieved unprecedented 99.8% accuracy in detecting 12 types of cancer from medical imaging. The system, which has been in development for five years, analyzed over 2 million patient scans and consistently outperformed teams of expert human pathologists.</p>
+                    <a href="#" class="news-more">Read Full Article</a>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="news-image">
+                    <img src="https://via.placeholder.com/400x300/0a1128/00a8ff?text=Quantum+AI" alt="Quantum AI">
+                </div>
+                <div class="news-info">
+                    <div class="news-date">May 15, 2028</div>
+                    <h3>Quantum AI Breakthrough Solves Complex Climate Models in Hours</h3>
+                    <p>New quantum computing platform enables unprecedented climate prediction accuracy.</p>
+                    <p>Scientists at the National Quantum Research Laboratory have successfully deployed the world's first large-scale quantum AI system capable of processing complex climate models with unprecedented speed and accuracy. The system, which combines a 10,000-qubit quantum processor with specialized AI algorithms, can simulate climate patterns 50 years into the future with 95% accuracy in just 8 hours—a task that would take traditional supercomputers months to complete.</p>
+                    <a href="#" class="news-more">Read Full Article</a>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="news-image">
+                    <img src="https://via.placeholder.com/400x300/0a1128/00a8ff?text=AI+Education" alt="AI Education">
+                </div>
+                <div class="news-info">
+                    <div class="news-date">May 13, 2028</div>
+                    <h3>Personalized AI Education System Shows Dramatic Learning Improvements</h3>
+                    <p>Adaptive learning platform reduces achievement gaps by 85% in nationwide study.</p>
+                    <p>The Department of Education released results from a three-year study of the National AI Education Platform today, showing dramatic improvements in student outcomes across all demographic groups. The adaptive learning system, which creates personalized curriculum and teaching methods for each student, has reduced achievement gaps between high and low-income students by 85% and accelerated learning rates by an average of 42% compared to traditional teaching methods.</p>
+                    <a href="#" class="news-more">Read Full Article</a>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="news-image">
+                    <img src="https://via.placeholder.com/400x300/0a1128/00a8ff?text=Neural+Interface" alt="Neural Interface">
+                </div>
+                <div class="news-info">
+                    <div class="news-date">May 11, 2028</div>
+                    <h3>Non-Invasive Neural Interface Restores Movement for Paralysis Patients</h3>
+                    <p>Breakthrough technology uses AI to interpret brain signals without surgical implants.</p>
+                    <p>Researchers at the National Institute of Neurological Disorders and Stroke have developed a non-invasive neural interface that allows paralyzed patients to control robotic limbs using only their thoughts. The system, which combines advanced EEG sensors with deep learning algorithms, can interpret complex brain signals with 94% accuracy without requiring surgical implants. In clinical trials, patients were able to perform fine motor tasks within just two weeks of training.</p>
+                    <a href="#" class="news-more">Read Full Article</a>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="news-image">
+                    <img src="https://via.placeholder.com/400x300/0a1128/00a8ff?text=AI+Energy" alt="AI Energy">
+                </div>
+                <div class="news-info">
+                    <div class="news-date">May 9, 2028</div>
+                    <h3>AI-Optimized Smart Grid Achieves 99.9% Renewable Energy Integration</h3>
+                    <p>Machine learning system balances variable renewable sources with unprecedented efficiency.</p>
+                    <p>The Department of Energy announced today that the National Smart Grid, powered by advanced AI systems, has successfully integrated 99.9% renewable energy sources while maintaining grid stability and reliability. The AI system, which manages power distribution across the country in real-time, uses predictive analytics to balance variable sources like solar and wind with demand patterns, virtually eliminating the need for fossil fuel backup generation.</p>
+                    <a href="#" class="news-more">Read Full Article</a>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="news-image">
+                    <img src="https://via.placeholder.com/400x300/0a1128/00a8ff?text=AI+Labor" alt="AI Labor">
+                </div>
+                <div class="news-info">
+                    <div class="news-date">May 7, 2028</div>
+                    <h3>Universal Basic Income Pilot Shows Positive Results in AI Transition Zones</h3>
+                    <p>Communities with high automation rates thrive under new economic model.</p>
+                    <p>The Bureau of Economic Resilience released its two-year assessment of the Automation Transition UBI Program today, showing remarkably positive outcomes in regions with high rates of AI-driven job displacement. The program, which provides $2,000 monthly to all adults in designated "AI transition zones," has led to a 45% increase in new business formation, a 60% increase in education enrollment, and significant improvements in health and wellbeing metrics despite substantial workforce changes.</p>
+                    <a href="#" class="news-more">Read Full Article</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="pagination">
+            <a href="#" class="pagination-arrow disabled"><i class="fas fa-chevron-left"></i></a>
+            <a href="#" class="pagination-number active">1</a>
+            <a href="#" class="pagination-number">2</a>
+            <a href="#" class="pagination-number">3</a>
+            <span class="pagination-ellipsis">...</span>
+            <a href="#" class="pagination-number">10</a>
+            <a href="#" class="pagination-arrow"><i class="fas fa-chevron-right"></i></a>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+        <div class="newsletter-content">
+            <div class="newsletter-text">
+                <h2>Stay <span class="highlight">Informed</span></h2>
+                <p>Subscribe to our newsletter for the latest updates on AI developments and progressive tech policy</p>
+            </div>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Your Email Address" required>
+                <button type="submit" class="btn btn-primary">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="project_2028_logo.png" alt="Project 2028 Logo">
+                <p>Project 2028</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>About</h4>
+                    <ul>
+                        <li><a href="about.html">Our Mission</a></li>
+                        <li><a href="about.html#team">Our Team</a></li>
+                        <li><a href="about.html#history">History</a></li>
+                        <li><a href="about.html#press">Press</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="resources.html">Research Papers</a></li>
+                        <li><a href="resources.html#policy">Policy Platform</a></li>
+                        <li><a href="resources.html#data">Data & Analysis</a></li>
+                        <li><a href="resources.html#media">Media Kit</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="careers.html">Careers</a></li>
+                        <li><a href="get-involved.html">Volunteer</a></li>
+                        <li><a href="events.html">Events</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-social">
+                <h4>Follow Us</h4>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2028 Project 2028. All Rights Reserved.</p>
+            <ul class="footer-legal">
+                <li><a href="privacy.html">Privacy Policy</a></li>
+                <li><a href="terms.html">Terms of Service</a></li>
+                <li><a href="accessibility.html">Accessibility</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <!-- Floating Action Button -->
+    <div class="fab">
+        <button class="fab-button">
+            <i class="fas fa-plus"></i>
+        </button>
+        <div class="fab-options">
+            <a href="donate.html" class="fab-option" data-tooltip="Support">
+                <i class="fas fa-dollar-sign"></i>
+            </a>
+            <a href="get-involved.html" class="fab-option" data-tooltip="Volunteer">
+                <i class="fas fa-hand-holding-heart"></i>
+            </a>
+            <a href="register.html" class="fab-option" data-tooltip="Register to Vote">
+                <i class="fas fa-vote-yea"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>

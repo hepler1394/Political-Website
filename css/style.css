@@ -1,0 +1,53 @@
+/* css/style.css */
+
+/* For WebKit-based browsers (Chrome, Safari, Edge, Opera) */
+::-webkit-scrollbar {
+    width: 12px; /* Width of the entire scrollbar */
+    height: 12px; /* Height of the scrollbar (for horizontal scrollbars) */
+}
+
+::-webkit-scrollbar-track {
+    background: #f4f6f8; /* Direct hex color for track */
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #0057b8; /* Direct hex color for thumb */
+    border-radius: 10px; /* Roundness of the scrollbar thumb */
+    border: 3px solid #f4f6f8; /* Direct hex color for border (track color) */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #00449a; /* Direct hex color for thumb on hover */
+}
+
+/* For Firefox */
+/* Note: Firefox scrollbar styling is less customizable */
+/* You can set the width (auto, thin, none) and colors. */
+html {
+    scrollbar-width: thin; /* "auto" or "thin" */
+    /* Using direct hex codes here too for consistency in testing, though variables should work in FF */
+    scrollbar-color: #0057b8 #f4f6f8; /* thumb-color track-color */
+}
+
+/* You can also apply this to specific elements if needed, e.g.: */
+/*
+.custom-scroll-element {
+    scrollbar-width: thin;
+    scrollbar-color: #0057b8 #f4f6f8;
+}
+.custom-scroll-element::-webkit-scrollbar {
+    width: 10px;
+}
+.custom-scroll-element::-webkit-scrollbar-track {
+    background: #f4f6f8;
+}
+.custom-scroll-element::-webkit-scrollbar-thumb {
+    background-color: #0057b8;
+    border-radius: 6px;
+    border: 2px solid #f4f6f8;
+}
+.custom-scroll-element::-webkit-scrollbar-thumb:hover {
+    background-color: #00449a;
+}
+*/

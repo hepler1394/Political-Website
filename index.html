@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 2028 - America's Progressive Future</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="noise-overlay"></div>
+    <div class="scan-line"></div>
+    
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="preloader-content">
+            <img src="project_2028_logo.png" alt="Project 2028 Logo" class="preloader-logo">
+            <div class="loading-bar-container">
+                <div class="loading-bar"></div>
+            </div>
+            <div class="loading-text">INITIALIZING PROGRESSIVE FUTURE</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="project_2028_logo.png" alt="Project 2028 Logo">
+                </a>
+            </div>
+            <div class="menu-toggle">
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="policies.html">Policies</a></li>
+                <li><a href="recent-news.html">Recent News</a></li>
+                <li><a href="international-news.html">International</a></li>
+                <li><a href="ai-news.html">AI News</a></li>
+                <li><a href="get-involved.html">Get Involved</a></li>
+            </ul>
+            <div class="nav-cta">
+                <a href="donate.html" class="btn btn-primary">Support</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="glitch" data-text="PROJECT 2028">PROJECT 2028</h1>
+                <p class="hero-subtitle">A progressive vision for America's future</p>
+                <div class="hero-cta">
+                    <a href="get-involved.html" class="btn btn-primary">Join the Movement</a>
+                    <a href="policies.html" class="btn btn-secondary">Explore Our Vision</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="usa_map_futuristic.png" alt="Futuristic USA Map" class="usa-map">
+                <div class="hero-particles"></div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll to Explore</span>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about">
+        <div class="section-header">
+            <h2 class="section-title">About <span class="highlight">Project 2028</span></h2>
+            <p class="section-subtitle">A progressive alternative to regressive policy platforms</p>
+        </div>
+        <div class="about-content">
+            <div class="about-text">
+                <p>Project 2028 is a forward-thinking initiative designed to counter regressive policy platforms with a positive, progressive vision for America's future. We believe in building a more equitable, sustainable, and just society that works for everyone, not just the privileged few.</p>
+                <p>Our comprehensive policy platform addresses the most pressing challenges facing our nation, from climate change and healthcare access to economic inequality and voting rights. Through research, advocacy, and grassroots organizing, we're working to create a better future for all Americans.</p>
+                <div class="about-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Policy Proposals</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">100K+</div>
+                        <div class="stat-label">Supporters</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">250+</div>
+                        <div class="stat-label">Expert Contributors</div>
+                    </div>
+                </div>
+                <a href="about.html" class="btn btn-secondary">Learn More About Us</a>
+            </div>
+            <div class="about-video">
+                <div class="video-container">
+                    <div class="video-placeholder">
+                        <i class="fas fa-play-circle"></i>
+                        <span>Watch Our Vision</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Policy Section -->
+    <section class="policies">
+        <div class="section-header">
+            <h2 class="section-title">Our <span class="highlight">Vision</span></h2>
+            <p class="section-subtitle">Progressive policies for a better America</p>
+        </div>
+        <div class="policy-grid">
+            <div class="policy-card" data-policy="economy">
+                <div class="policy-icon">
+                    <img src="policy_icon_set.png" alt="Economy Policy" class="economy-icon">
+                </div>
+                <h3>Economic Justice</h3>
+                <p>Building an economy that works for everyone, not just the wealthy few</p>
+                <div class="policy-stats">
+                    <div class="stat">
+                        <span class="stat-number">$25</span>
+                        <span class="stat-label">Min Wage</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">+15M</span>
+                        <span class="stat-label">New Jobs</span>
+                    </div>
+                </div>
+                <a href="policies.html#economy" class="policy-more">Learn More</a>
+            </div>
+            <div class="policy-card" data-policy="environment">
+                <div class="policy-icon">
+                    <img src="policy_icon_set.png" alt="Environment Policy" class="environment-icon">
+                </div>
+                <h3>Climate Action</h3>
+                <p>Accelerating the transition to 100% clean energy and creating millions of green jobs</p>
+                <div class="policy-stats">
+                    <div class="stat">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">Clean Energy</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">-50%</span>
+                        <span class="stat-label">Emissions</span>
+                    </div>
+                </div>
+                <a href="policies.html#environment" class="policy-more">Learn More</a>
+            </div>
+            <div class="policy-card" data-policy="education">
+                <div class="policy-icon">
+                    <img src="policy_icon_set.png" alt="Education Policy" class="education-icon">
+                </div>
+                <h3>Education Reform</h3>
+                <p>Ensuring quality education for all Americans from pre-K through college</p>
+                <div class="policy-stats">
+                    <div class="stat">
+                        <span class="stat-number">Free</span>
+                        <span class="stat-label">Public College</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">+50%</span>
+                        <span class="stat-label">Teacher Pay</span>
+                    </div>
+                </div>
+                <a href="policies.html#education" class="policy-more">Learn More</a>
+            </div>
+            <div class="policy-card" data-policy="technology">
+                <div class="policy-icon">
+                    <img src="policy_icon_set.png" alt="Technology Policy" class="technology-icon">
+                </div>
+                <h3>Technology & Innovation</h3>
+                <p>Harnessing technology to solve our biggest challenges while ensuring digital rights</p>
+                <div class="policy-stats">
+                    <div class="stat">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">Broadband</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">$2T</span>
+                        <span class="stat-label">R&D Investment</span>
+                    </div>
+                </div>
+                <a href="policies.html#technology" class="policy-more">Learn More</a>
+            </div>
+        </div>
+        <div class="policies-cta">
+            <a href="policies.html" class="btn btn-primary">View All Policies</a>
+        </div>
+    </section>
+
+    <!-- News Section -->
+    <section class="news">
+        <div class="section-header">
+            <h2 class="section-title">Latest <span class="highlight">News</span></h2>
+            <p class="section-subtitle">Stay informed on progressive developments</p>
+        </div>
+        <div class="news-tabs">
+            <button class="news-tab active" data-tab="recent">Recent</button>
+            <button class="news-tab" data-tab="international">International</button>
+            <button class="news-tab" data-tab="ai">AI & Tech</button>
+        </div>
+        <div class="news-content">
+            <div class="news-panel active" id="recent-news">
+                <div class="news-grid">
+                    <div class="news-card featured">
+                        <div class="news-image">
+                            <div class="news-tag">Featured</div>
+                            <img src="https://via.placeholder.com/600x400/0a1128/00a8ff?text=News+Image" alt="News Image">
+                        </div>
+                        <div class="news-info">
+                            <div class="news-date">May 20, 2028</div>
+                            <h3>New Climate Legislation Passes with Bipartisan Support</h3>
+                            <p>Landmark bill sets ambitious targets for carbon reduction and creates millions of new clean energy jobs across America.</p>
+                            <a href="recent-news.html" class="news-more">Read More</a>
+                        </div>
+                    </div>
+                    <div class="news-card">
+                        <div class="news-image">
+                            <img src="https://via.placeholder.com/400x300/0a1128/00a8ff?text=News+Image" alt="News Image">
+                        </div>
+                        <div class="news-info">
+                            <div class="news-date">May 18, 2028</div>
+                            <h3>Universal Healthcare Plan Shows Promising Results</h3>
+                            <p>First year data shows improved outcomes and reduced costs under new healthcare system.</p>
+                            <a href="recent-news.html" class="news-more">Read More</a>
+                        </div>
+                    </div>
+                    <div class="news-card">
+                        <div class="news-image">
+                            <img src="https://via.placeholder.com/400x300/0a1128/00a8ff?text=News+Image" alt="News Image">
+                        </div>
+                        <div class="news-info">
+                            <div class="news-date">May 15, 2028</div>
+                            <h3>Economic Equality Index Reaches Record High</h3>
+                            <p>New data shows significant progress in closing wealth and income gaps across demographic groups.</p>
+                            <a href="recent-news.html" class="news-more">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="news-cta">
+                    <a href="recent-news.html" class="btn btn-secondary">View All Recent News</a>
+                </div>
+            </div>
+            <div class="news-panel" id="international-news">
+                <!-- International news content will be loaded here -->
+                <div class="news-placeholder">
+                    <img src="international_news_icon.png" alt="International News">
+                    <p>Visit the International News page for the latest global developments</p>
+                    <a href="international-news.html" class="btn btn-secondary">Go to International News</a>
+                </div>
+            </div>
+            <div class="news-panel" id="ai-news">
+                <!-- AI news content will be loaded here -->
+                <div class="news-placeholder">
+                    <img src="ai_news_icon.png" alt="AI News">
+                    <p>Visit the AI News page for the latest developments in technology and artificial intelligence</p>
+                    <a href="ai-news.html" class="btn btn-secondary">Go to AI News</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Get Involved Section -->
+    <section class="get-involved">
+        <div class="section-header">
+            <h2 class="section-title">Join the <span class="highlight">Movement</span></h2>
+            <p class="section-subtitle">Be part of America's progressive future</p>
+        </div>
+        <div class="involvement-options">
+            <div class="involvement-card">
+                <div class="card-icon">
+                    <i class="fas fa-hand-holding-heart"></i>
+                </div>
+                <h3>Volunteer</h3>
+                <p>Join our grassroots movement and help build a better future for all Americans</p>
+                <a href="get-involved.html#volunteer" class="btn btn-secondary">Sign Up</a>
+            </div>
+            <div class="involvement-card">
+                <div class="card-icon">
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+                <h3>Support</h3>
+                <p>Support our initiatives and research with a contribution of any size</p>
+                <a href="donate.html" class="btn btn-primary">Donate Now</a>
+            </div>
+            <div class="involvement-card">
+                <div class="card-icon">
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <h3>Spread the Word</h3>
+                <p>Share our message and help grow the progressive movement</p>
+                <div class="social-share">
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="newsletter-signup">
+            <h3>Stay Updated</h3>
+            <p>Get the latest news and updates from Project 2028</p>
+            <form class="signup-form">
+                <div class="form-group">
+                    <input type="email" placeholder="Your Email" required>
+                    <button type="submit" class="btn btn-primary">Subscribe</button>
+                </div>
+                <div class="form-consent">
+                    <input type="checkbox" id="consent" required>
+                    <label for="consent">I agree to receive updates from Project 2028</label>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="project_2028_logo.png" alt="Project 2028 Logo">
+                <p>Project 2028</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>About</h4>
+                    <ul>
+                        <li><a href="about.html">Our Mission</a></li>
+                        <li><a href="about.html#team">Our Team</a></li>
+                        <li><a href="about.html#history">History</a></li>
+                        <li><a href="about.html#press">Press</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="resources.html">Research Papers</a></li>
+                        <li><a href="resources.html#policy">Policy Platform</a></li>
+                        <li><a href="resources.html#data">Data & Analysis</a></li>
+                        <li><a href="resources.html#media">Media Kit</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="careers.html">Careers</a></li>
+                        <li><a href="get-involved.html">Volunteer</a></li>
+                        <li><a href="events.html">Events</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-social">
+                <h4>Follow Us</h4>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2028 Project 2028. All Rights Reserved.</p>
+            <ul class="footer-legal">
+                <li><a href="privacy.html">Privacy Policy</a></li>
+                <li><a href="terms.html">Terms of Service</a></li>
+                <li><a href="accessibility.html">Accessibility</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <!-- Floating Action Button -->
+    <div class="fab">
+        <button class="fab-button">
+            <i class="fas fa-plus"></i>
+        </button>
+        <div class="fab-options">
+            <a href="donate.html" class="fab-option" data-tooltip="Support">
+                <i class="fas fa-dollar-sign"></i>
+            </a>
+            <a href="get-involved.html" class="fab-option" data-tooltip="Volunteer">
+                <i class="fas fa-hand-holding-heart"></i>
+            </a>
+            <a href="register.html" class="fab-option" data-tooltip="Register to Vote">
+                <i class="fas fa-vote-yea"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>
