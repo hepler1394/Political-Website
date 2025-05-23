@@ -19,7 +19,7 @@ def generate_news_card_html(article):
     """Generates HTML for a single news card."""
     title = article.get('title', 'No Title Available')
     description = article.get('description', article.get('snippet', 'No Description Available'))
-    url = article.get('url', '#')
+    url = article.get('url') # Default '#' removed, as articles without URLs are skipped in main()
     image_url = article.get('image_url', 'https://via.placeholder.com/400x300/00a8ff/ffffff?text=News')
     published_at = format_date(article.get('published_at', ''))
 
@@ -41,7 +41,35 @@ def generate_news_card_html(article):
             </div>
     """
 
+def generate_featured_news_html(article):
+    """Generates HTML for the featured news card."""
+    title = article.get('title', 'No Title Available')
+    description = article.get('description', article.get('snippet', 'No Description Available'))
+    url = article.get('url') # Assumes URL is present due to pre-filtering
+    image_url = article.get('image_url') # Assumes image_url is present
+    published_at = format_date(article.get('published_at', ''))
+
+    # Basic HTML escaping
+    title = title.replace('<', '&lt;').replace('>', '&gt;')
+    description = description.replace('<', '&lt;').replace('>', '&gt;')
+
+    return f"""
+            <div class="featured-news-card">
+                <div class="featured-news-image">
+                    <div class="news-tag">Featured</div>
+                    <img src="{image_url}" alt="{title}">
+                </div>
+                <div class="featured-news-content">
+                    <div class="news-date">{published_at}</div>
+                    <h2>{title}</h2>
+                    <p class="news-excerpt">{description}</p>
+                    <a href="{url}" class="btn btn-primary news-more" target="_blank" rel="noopener noreferrer">Read Full Story</a>
+                </div>
+            </div>
+    """
+
 def main():
+    MAX_ARTICLES_TO_DISPLAY = 20
     # Load environment variables
     load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '.env'))
     api_token = os.getenv('NEWS_API_TOKEN')
@@ -56,7 +84,8 @@ def main():
         'api_token': api_token,
         'locale': 'us',
         'language': 'en',
-        'limit': 3
+        'limit': 30,
+        'categories': 'politics'
     }
 
     try:
@@ -73,10 +102,42 @@ def main():
         print("No articles found in API response.")
         return
 
-    # Generate HTML for news cards
-    news_html_content = ""
-    for article in articles:
-        news_html_content += generate_news_card_html(article)
+    # Stricter Article Filtering
+    filtered_articles = []
+    if articles:
+        for article in articles:
+            url = article.get('url')
+            image_url = article.get('image_url')
+            if url and image_url: # Must have both URL and image_url
+                filtered_articles.append(article)
+            else:
+                title = article.get('title', 'N/A')
+                print(f"Skipping article due to missing URL or image_url: {title}")
+    
+    if not filtered_articles:
+        print("No suitable articles found after filtering.")
+        # Prepare empty content to clear sections if needed
+        featured_article_html = "<!-- No featured article available -->"
+        regular_news_html_content = "<!-- No regular news articles available -->"
+    else:
+        featured_article_html = ""
+        regular_news_html_content = ""
+        articles_for_display_count = 0
+
+        # Select featured article
+        featured_article_html = generate_featured_news_html(filtered_articles[0])
+        articles_for_display_count = 1
+
+        # Select regular articles
+        for i in range(1, len(filtered_articles)):
+            if articles_for_display_count >= MAX_ARTICLES_TO_DISPLAY:
+                break
+            regular_news_html_content += generate_news_card_html(filtered_articles[i])
+            articles_for_display_count += 1
+        
+        if not regular_news_html_content: # If only one article was found, it's featured.
+            regular_news_html_content = "<!-- No additional news articles available -->"
+
 
     # Read recent-news.html
     recent_news_file_path = os.path.join(os.path.dirname(__file__), '..', 'recent-news.html')
@@ -91,25 +152,39 @@ def main():
         return
         
     # Update recent-news.html content
-    # Using regex to find the div and replace its content.
-    # This pattern captures the div tags and the content inside.
-    # It's important to make the inner content capture non-greedy (.*?)
-    pattern = r'(<div class="news-grid">)(.*?)(</div>)'
-    
-    # We want to replace the content *between* the tags
-    # So the replacement string will be the opening tag, new content, and closing tag.
-    replacement_html = f'\\1{news_html_content.strip()}\\3'
+    # Update featured news section
+    pattern_featured = r'(<div class="featured-news" id="smart-grid">)(.*?)(</div>)'
+    # Ensure featured_article_html is defined, even if it's the placeholder comment
+    if 'featured_article_html' not in locals() and not filtered_articles:
+        featured_article_html = "<!-- Debug: No featured article available (initial check) -->"
+    elif 'featured_article_html' not in locals() and filtered_articles:
+         # This case should ideally not happen if logic is correct
+        featured_article_html = generate_featured_news_html(filtered_articles[0])
 
-    if re.search(pattern, html_content, re.DOTALL):
-        updated_html_content = re.sub(pattern, replacement_html, html_content, count=1, flags=re.DOTALL)
+
+    print(f"DEBUG: About to search for featured pattern. featured_article_html is: {featured_article_html[:200]}...") # Print first 200 chars
+    
+    updated_html_content = html_content
+    if re.search(pattern_featured, updated_html_content, re.DOTALL):
+        print("DEBUG: Found pattern_featured in HTML.")
+        # The existing re.sub line for pattern_featured follows
+        replacement_featured_html = f'\\1{featured_article_html.strip()}\\3'
+        updated_html_content = re.sub(pattern_featured, replacement_featured_html, updated_html_content, count=1, flags=re.DOTALL)
+    else:
+        print("DEBUG: Did NOT find pattern_featured in HTML.")
+        # The existing print error message for pattern_featured follows
+        print("Error: <div class=\"featured-news\" id=\"smart-grid\"> not found in recent-news.html.")
+        # Continue to update the other section if this one is missing
+
+    # Update regular news grid section
+    pattern_grid = r'(<div class="news-grid">)(.*?)(</div>)'
+    replacement_grid_html = f'\\1{regular_news_html_content.strip()}\\3'
+
+    if re.search(pattern_grid, updated_html_content, re.DOTALL):
+        updated_html_content = re.sub(pattern_grid, replacement_grid_html, updated_html_content, count=1, flags=re.DOTALL)
     else:
         print("Error: <div class=\"news-grid\"> not found in recent-news.html.")
-        print("Please ensure the target div exists in the HTML file.")
-        # For debugging, print the first 500 chars of what was read
-        print("\nStart of recent-news.html content:")
-        print(html_content[:500])
-        print("------------------------------------")
-        return
+        # If both are missing, it's a bigger issue, but we'll try to write what we have.
 
     # Write the updated HTML back to recent-news.html
     try:
