@@ -430,6 +430,9 @@ button, input, select, textarea {
 .nav-links {
     display: flex;
     gap: 2rem;
+    justify-content: space-between; /* Spread out the navigation items */
+    flex-grow: 1; /* Allow the nav-links to take available space */
+    flex-wrap: nowrap; /* Ensure items stay on a single line */
 }
 
 .nav-links a {
