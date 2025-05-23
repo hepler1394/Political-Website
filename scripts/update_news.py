@@ -3,6 +3,7 @@ import requests
 from datetime import datetime
 from dotenv import load_dotenv
 import re
+import argparse
 
 def format_date(date_string):
     """Converts ISO date string to 'Month Day, Year' format."""
@@ -68,8 +69,8 @@ def generate_featured_news_html(article):
             </div>
     """
 
-def main():
-    MAX_ARTICLES_TO_DISPLAY = 10
+def main(args):
+    # MAX_ARTICLES_TO_DISPLAY is now args.max_articles
     # Load environment variables
     load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '.env'))
     api_token = os.getenv('NEWS_API_TOKEN')
@@ -82,11 +83,13 @@ def main():
     news_api_url = "https://api.thenewsapi.com/v1/news/top"
     params = {
         'api_token': api_token,
-        'locale': 'us',
-        'language': 'en',
-        'limit': 30,
-        'categories': 'politics'
+        'language': 'en', # Assuming this is always 'en'
+        'limit': 30 # Still fetch more to filter
     }
+    if args.api_locale: # Add if provided
+        params['locale'] = args.api_locale
+    if args.api_categories: # Add if provided
+        params['categories'] = args.api_categories
 
     try:
         response = requests.get(news_api_url, params=params, timeout=10)
@@ -130,7 +133,7 @@ def main():
 
         # Select regular articles
         for i in range(1, len(filtered_articles)):
-            if articles_for_display_count >= MAX_ARTICLES_TO_DISPLAY:
+            if articles_for_display_count >= args.max_articles:
                 break
             regular_news_html_content += generate_news_card_html(filtered_articles[i])
             articles_for_display_count += 1
@@ -139,16 +142,16 @@ def main():
             regular_news_html_content = "<!-- No additional news articles available -->"
 
 
-    # Read recent-news.html
-    recent_news_file_path = os.path.join(os.path.dirname(__file__), '..', 'recent-news.html')
+    # Read HTML file
+    html_file_path = os.path.join(os.path.dirname(__file__), '..', args.html_file_name)
     try:
-        with open(recent_news_file_path, 'r', encoding='utf-8') as f:
+        with open(html_file_path, 'r', encoding='utf-8') as f:
             html_content = f.read()
     except FileNotFoundError:
-        print(f"Error: {recent_news_file_path} not found.")
+        print(f"Error: {html_file_path} not found.")
         return
     except Exception as e:
-        print(f"Error reading {recent_news_file_path}: {e}")
+        print(f"Error reading {html_file_path}: {e}")
         return
         
     # Update recent-news.html content
@@ -163,9 +166,28 @@ def main():
 
     # Update featured news section
     print(f"DEBUG_FEATURED_HTML_CONTENT:\n{featured_article_html}\nEND_DEBUG_FEATURED_HTML_CONTENT")
-    pattern_featured = r'(<div class="featured-news" id="smart-grid">)(.*?)(</div>)'
-    replacement_featured = f'\\1{featured_article_html.strip()}\\3'
-    if re.search(pattern_featured, updated_html_content, re.DOTALL):
+    
+    pattern_featured = ""
+    if args.featured_div_identifier.startswith('#'):
+        # ID based identifier
+        div_id = args.featured_div_identifier[1:]
+        # This regex looks for a div that has the class "featured-news" AND the specified ID.
+        # It allows for other classes to be present as well.
+        pattern_featured = rf'(<div\s+(?:[^>]*\s)?class="[^"]*featured-news[^"]*"\s+(?:[^>]*\s)?id="{div_id}"[^>]*>)(.*?)(</div>)'
+    elif args.featured_div_identifier.startswith('.'):
+        # Class based identifier
+        div_class = args.featured_div_identifier[1:]
+        # This regex looks for a div that has the specified class. 
+        # It allows for other classes to be present.
+        # It will target the first such div.
+        pattern_featured = rf'(<div\s+(?:[^>]*\s)?class="[^"]*{div_class}[^"]*"[^>]*>)(.*?)(</div>)'
+    else:
+        print(f"ERROR: Invalid featured_div_identifier format: {args.featured_div_identifier}. Must start with # or .")
+        # Potentially exit or use a default, but for now, let it fail finding the pattern.
+        pattern_featured = None # This will cause re.search to fail if identifier is malformed
+
+    if pattern_featured and re.search(pattern_featured, updated_html_content, re.DOTALL):
+        replacement_featured = f'\\1{featured_article_html.strip()}\\3'
         updated_html_content = re.sub(pattern_featured, replacement_featured, updated_html_content, count=1, flags=re.DOTALL)
     else:
         print("ERROR: Did not find featured news div for update.")
@@ -181,13 +203,21 @@ def main():
     else:
         print("ERROR: Did not find news grid div for update.")
 
-    # Write the updated HTML back to recent-news.html
+    # Write the updated HTML back to the file
     try:
-        with open(recent_news_file_path, 'w', encoding='utf-8') as f:
+        with open(html_file_path, 'w', encoding='utf-8') as f:
             f.write(updated_html_content)
-        print("Successfully updated recent-news.html with the latest news.")
+        print(f"Successfully updated {args.html_file_name} with the latest news.")
     except Exception as e:
-        print(f"Error writing updated content to {recent_news_file_path}: {e}")
+        print(f"Error writing updated content to {html_file_path}: {e}")
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="Update HTML file with the latest news articles.")
+    parser.add_argument('--html_file_name', type=str, required=True, help='Name of the HTML file to update (e.g., "recent-news.html")')
+    parser.add_argument('--api_locale', type=str, default="us", help='Locale for The News API (e.g., "us", "gb")')
+    parser.add_argument('--api_categories', type=str, default="", help='Comma-separated categories for The News API (e.g., "politics,technology")')
+    parser.add_argument('--featured_div_identifier', type=str, required=True, help='Identifier for the featured news div (e.g., "#smart-grid" or ".featured-news")')
+    parser.add_argument('--max_articles', type=int, default=10, help='Maximum number of articles to display (including featured)')
+    
+    parsed_args = parser.parse_args()
+    main(parsed_args)

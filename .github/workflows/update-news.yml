@@ -25,19 +25,36 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests python-dotenv
 
-      - name: Run news update script
+      - name: Run script for US Political News
         env:
           NEWS_API_TOKEN: ${{ secrets.NEWS_API_TOKEN }}
-        run: python scripts/update_news.py
+        run: |
+          python scripts/update_news.py \
+            --html_file_name "recent-news.html" \
+            --api_locale "us" \
+            --api_categories "politics" \
+            --featured_div_identifier "#smart-grid" \
+            --max_articles 10
+
+      - name: Run script for International News
+        env:
+          NEWS_API_TOKEN: ${{ secrets.NEWS_API_TOKEN }}
+        run: |
+          python scripts/update_news.py \
+            --html_file_name "international-news.html" \
+            --api_locale "gb,ca,au,de,fr,jp" \
+            --api_categories "" \
+            --featured_div_identifier ".featured-news" \
+            --max_articles 10
 
       - name: Commit and push changes
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add recent-news.html
+          git add recent-news.html international-news.html
           # Check if there are changes to commit
           if ! git diff --staged --quiet; then
-            git commit -m 'Automated update of recent news stories'
+            git commit -m 'Automated update of US and International news stories'
             git push
           else
             echo "No changes to commit."
