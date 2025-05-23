@@ -69,7 +69,7 @@ def generate_featured_news_html(article):
     """
 
 def main():
-    MAX_ARTICLES_TO_DISPLAY = 20
+    MAX_ARTICLES_TO_DISPLAY = 10
     # Load environment variables
     load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '.env'))
     api_token = os.getenv('NEWS_API_TOKEN')
@@ -152,39 +152,34 @@ def main():
         return
         
     # Update recent-news.html content
-    # Update featured news section
-    pattern_featured = r'(<div class="featured-news" id="smart-grid">)(.*?)(</div>)'
-    # Ensure featured_article_html is defined, even if it's the placeholder comment
-    if 'featured_article_html' not in locals() and not filtered_articles:
-        featured_article_html = "<!-- Debug: No featured article available (initial check) -->"
-    elif 'featured_article_html' not in locals() and filtered_articles:
-         # This case should ideally not happen if logic is correct
-        featured_article_html = generate_featured_news_html(filtered_articles[0])
-
-
-    print(f"DEBUG: About to search for featured pattern. featured_article_html is: {featured_article_html[:200]}...") # Print first 200 chars
-    
     updated_html_content = html_content
+
+    # Ensure featured_article_html and regular_news_html_content are defined
+    # (they should be from the logic above, handling cases with/without filtered_articles)
+    if 'featured_article_html' not in locals():
+        featured_article_html = "<!-- Fallback: No featured article generated -->"
+    if 'regular_news_html_content' not in locals():
+        regular_news_html_content = "<!-- Fallback: No regular news generated -->"
+
+    # Update featured news section
+    print(f"DEBUG_FEATURED_HTML_CONTENT:\n{featured_article_html}\nEND_DEBUG_FEATURED_HTML_CONTENT")
+    pattern_featured = r'(<div class="featured-news" id="smart-grid">)(.*?)(</div>)'
+    replacement_featured = f'\\1{featured_article_html.strip()}\\3'
     if re.search(pattern_featured, updated_html_content, re.DOTALL):
-        print("DEBUG: Found pattern_featured in HTML.")
-        # The existing re.sub line for pattern_featured follows
-        replacement_featured_html = f'\\1{featured_article_html.strip()}\\3'
-        updated_html_content = re.sub(pattern_featured, replacement_featured_html, updated_html_content, count=1, flags=re.DOTALL)
+        updated_html_content = re.sub(pattern_featured, replacement_featured, updated_html_content, count=1, flags=re.DOTALL)
     else:
-        print("DEBUG: Did NOT find pattern_featured in HTML.")
-        # The existing print error message for pattern_featured follows
-        print("Error: <div class=\"featured-news\" id=\"smart-grid\"> not found in recent-news.html.")
-        # Continue to update the other section if this one is missing
+        print("ERROR: Did not find featured news div for update.")
 
     # Update regular news grid section
+    print(f"DEBUG_REGULAR_NEWS_HTML_CONTENT_LENGTH: {len(regular_news_html_content)}")
+    print(f"DEBUG_REGULAR_NEWS_HTML_CONTENT_SNIPPET:\n{regular_news_html_content[:500]}\nEND_DEBUG_REGULAR_NEWS_HTML_CONTENT_SNIPPET")
+    print(f"DEBUG_REGULAR_NEWS_HTML_CONTENT:\n{regular_news_html_content}\nEND_DEBUG_REGULAR_NEWS_HTML_CONTENT")
     pattern_grid = r'(<div class="news-grid">)(.*?)(</div>)'
-    replacement_grid_html = f'\\1{regular_news_html_content.strip()}\\3'
-
+    replacement_grid = f'\\1{regular_news_html_content.strip()}\\3'
     if re.search(pattern_grid, updated_html_content, re.DOTALL):
-        updated_html_content = re.sub(pattern_grid, replacement_grid_html, updated_html_content, count=1, flags=re.DOTALL)
+        updated_html_content = re.sub(pattern_grid, replacement_grid, updated_html_content, count=1, flags=re.DOTALL)
     else:
-        print("Error: <div class=\"news-grid\"> not found in recent-news.html.")
-        # If both are missing, it's a bigger issue, but we'll try to write what we have.
+        print("ERROR: Did not find news grid div for update.")
 
     # Write the updated HTML back to recent-news.html
     try:
