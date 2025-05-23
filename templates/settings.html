@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="settings-page">
+    <div class="bg-gray-800 rounded-lg shadow-lg p-6 mb-8 border border-gray-700">
+        <h2 class="text-3xl font-bold mb-4 text-blue-400">Settings</h2>
+        <p class="text-xl text-gray-300 mb-6">Configure your USA AI News Tool preferences and API keys.</p>
+    </div>
+    
+    <!-- API Keys -->
+    <div class="bg-gray-800 rounded-lg shadow-lg border border-gray-700 mb-8">
+        <div class="border-b border-gray-700 px-6 py-4">
+            <h3 class="text-xl font-bold text-blue-400">API Keys</h3>
+        </div>
+        <div class="p-6">
+            <form id="api-keys-form" class="space-y-6">
+                <div>
+                    <label for="brave-api-key" class="block text-gray-400 text-sm mb-1">Brave API Key</label>
+                    <input type="password" id="brave-api-key" placeholder="Enter your Brave API key" class="w-full bg-gray-700 text-white rounded px-3 py-2 border border-gray-600">
+                    <p class="text-gray-400 text-xs mt-1">Used for fetching news from Brave Search API.</p>
+                </div>
+                
+                <div>
+                    <label for="google-api-key" class="block text-gray-400 text-sm mb-1">Google API Key</label>
+                    <input type="password" id="google-api-key" placeholder="Enter your Google API key" class="w-full bg-gray-700 text-white rounded px-3 py-2 border border-gray-600">
+                    <p class="text-gray-400 text-xs mt-1">Used for fetching news from Google News API.</p>
+                </div>
+                
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition">
+                        <i class="fas fa-save mr-2"></i> Save API Keys
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- General Settings -->
+    <div class="bg-gray-800 rounded-lg shadow-lg border border-gray-700 mb-8">
+        <div class="border-b border-gray-700 px-6 py-4">
+            <h3 class="text-xl font-bold text-blue-400">General Settings</h3>
+        </div>
+        <div class="p-6">
+            <form id="general-settings-form" class="space-y-6">
+                <div>
+                    <label for="default-topic" class="block text-gray-400 text-sm mb-1">Default Topic</label>
+                    <select id="default-topic" class="w-full bg-gray-700 text-white rounded px-3 py-2 border border-gray-600">
+                        <option value="all">All Topics</option>
+                        <option value="climate">Climate Action</option>
+                        <option value="economy">Economic Justice</option>
+                        <option value="healthcare">Healthcare</option>
+                        <option value="voting">Voting Rights</option>
+                        <option value="international">International</option>
+                        <option value="ai">AI News</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label for="articles-per-page" class="block text-gray-400 text-sm mb-1">Articles Per Page</label>
+                    <input type="number" id="articles-per-page" value="10" min="5" max="50" class="w-full bg-gray-700 text-white rounded px-3 py-2 border border-gray-600">
+                </div>
+                
+                <div>
+                    <label for="auto-refresh" class="block text-gray-400 text-sm mb-1">Auto-Refresh Interval (minutes)</label>
+                    <input type="number" id="auto-refresh" value="0" min="0" max="1440" class="w-full bg-gray-700 text-white rounded px-3 py-2 border border-gray-600">
+                    <p class="text-gray-400 text-xs mt-1">Set to 0 to disable auto-refresh.</p>
+                </div>
+                
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition">
+                        <i class="fas fa-save mr-2"></i> Save Settings
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Advanced Settings -->
+    <div class="bg-gray-800 rounded-lg shadow-lg border border-gray-700">
+        <div class="border-b border-gray-700 px-6 py-4">
+            <h3 class="text-xl font-bold text-blue-400">Advanced Settings</h3>
+        </div>
+        <div class="p-6">
+            <div class="space-y-6">
+                <div>
+                    <button id="clear-cache-btn" class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-md transition">
+                        <i class="fas fa-broom mr-2"></i> Clear Cache
+                    </button>
+                    <p class="text-gray-400 text-xs mt-1">Clears the application cache but keeps your data.</p>
+                </div>
+                
+                <div>
+                    <button id="reset-database-btn" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md transition">
+                        <i class="fas fa-trash mr-2"></i> Reset Database
+                    </button>
+                    <p class="text-gray-400 text-xs mt-1">Warning: This will delete all your news articles, images, and pages.</p>
+                </div>
+                
+                <div>
+                    <button id="export-database-btn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition">
+                        <i class="fas fa-download mr-2"></i> Export Database
+                    </button>
+                    <p class="text-gray-400 text-xs mt-1">Export your database for backup purposes.</p>
+                </div>
+                
+                <div>
+                    <button id="import-database-btn" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md transition">
+                        <i class="fas fa-upload mr-2"></i> Import Database
+                    </button>
+                    <p class="text-gray-400 text-xs mt-1">Import a previously exported database.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // API Keys Form
+    const apiKeysForm = document.getElementById('api-keys-form');
+    if (apiKeysForm) {
+        apiKeysForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const braveApiKey = document.getElementById('brave-api-key').value;
+            const googleApiKey = document.getElementById('google-api-key').value;
+            
+            // Save API keys (in a real app, this would be a server request)
+            localStorage.setItem('brave_api_key', braveApiKey);
+            localStorage.setItem('google_api_key', googleApiKey);
+            
+            showToast('API keys saved successfully', 'success');
+        });
+    }
+    
+    // General Settings Form
+    const generalSettingsForm = document.getElementById('general-settings-form');
+    if (generalSettingsForm) {
+        generalSettingsForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const defaultTopic = document.getElementById('default-topic').value;
+            const articlesPerPage = document.getElementById('articles-per-page').value;
+            const autoRefresh = document.getElementById('auto-refresh').value;
+            
+            // Save settings (in a real app, this would be a server request)
+            localStorage.setItem('default_topic', defaultTopic);
+            localStorage.setItem('articles_per_page', articlesPerPage);
+            localStorage.setItem('auto_refresh', autoRefresh);
+            
+            showToast('Settings saved successfully', 'success');
+        });
+    }
+    
+    // Clear Cache Button
+    const clearCacheBtn = document.getElementById('clear-cache-btn');
+    if (clearCacheBtn) {
+        clearCacheBtn.addEventListener('click', function() {
+            // Clear cache (in a real app, this would be a server request)
+            showToast('Cache cleared successfully', 'success');
+        });
+    }
+    
+    // Reset Database Button
+    const resetDatabaseBtn = document.getElementById('reset-database-btn');
+    if (resetDatabaseBtn) {
+        resetDatabaseBtn.addEventListener('click', function() {
+            if (confirm('Are you sure you want to reset the database? This action cannot be undone.')) {
+                // Reset database (in a real app, this would be a server request)
+                showToast('Database reset successfully', 'success');
+            }
+        });
+    }
+    
+    // Export Database Button
+    const exportDatabaseBtn = document.getElementById('export-database-btn');
+    if (exportDatabaseBtn) {
+        exportDatabaseBtn.addEventListener('click', function() {
+            // Export database (in a real app, this would be a server request)
+            showToast('Database exported successfully', 'success');
+        });
+    }
+    
+    // Import Database Button
+    const importDatabaseBtn = document.getElementById('import-database-btn');
+    if (importDatabaseBtn) {
+        importDatabaseBtn.addEventListener('click', function() {
+            // Import database (in a real app, this would be a server request)
+            showToast('Database imported successfully', 'success');
+        });
+    }
+    
+    // Load saved values
+    document.addEventListener('DOMContentLoaded', function() {
+        // API Keys
+        const braveApiKey = localStorage.getItem('brave_api_key');
+        const googleApiKey = localStorage.getItem('google_api_key');
+        
+        if (braveApiKey && document.getElementById('brave-api-key')) {
+            document.getElementById('brave-api-key').value = braveApiKey;
+        }
+        
+        if (googleApiKey && document.getElementById('google-api-key')) {
+            document.getElementById('google-api-key').value = googleApiKey;
+        }
+        
+        // General Settings
+        const defaultTopic = localStorage.getItem('default_topic');
+        const articlesPerPage = localStorage.getItem('articles_per_page');
+        const autoRefresh = localStorage.getItem('auto_refresh');
+        
+        if (defaultTopic && document.getElementById('default-topic')) {
+            document.getElementById('default-topic').value = defaultTopic;
+        }
+        
+        if (articlesPerPage && document.getElementById('articles-per-page')) {
+            document.getElementById('articles-per-page').value = articlesPerPage;
+        }
+        
+        if (autoRefresh && document.getElementById('auto-refresh')) {
+            document.getElementById('auto-refresh').value = autoRefresh;
+        }
+    });
+</script>
+{% endblock %}

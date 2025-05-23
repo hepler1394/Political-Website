@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="export-page">
+    <div class="bg-gray-800 rounded-lg shadow-lg p-6 mb-8 border border-gray-700">
+        <h2 class="text-3xl font-bold mb-4 text-blue-400">Export for Vercel</h2>
+        <p class="text-xl text-gray-300 mb-6">Prepare your Project 2028 website for deployment to Vercel.</p>
+        
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="export-all-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition">
+                <i class="fas fa-file-export mr-2"></i> Export All Pages
+            </button>
+            <button id="export-selected-btn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition">
+                <i class="fas fa-check-square mr-2"></i> Export Selected
+            </button>
+            <button id="download-export-btn" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md transition">
+                <i class="fas fa-download mr-2"></i> Download Export
+            </button>
+        </div>
+    </div>
+    
+    <!-- Export Configuration -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div class="lg:col-span-2">
+            <div class="bg-gray-800 rounded-lg shadow-lg border border-gray-700">
+                <div class="border-b border-gray-700 px-6 py-4">
+                    <h3 class="text-xl font-bold text-blue-400">Pages to Export</h3>
+                </div>
+                <div class="p-6">
+                    <div class="mb-4 flex justify-between items-center">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="select-all-pages" class="mr-2">
+                            <label for="select-all-pages" class="text-gray-300">Select All</label>
+                        </div>
+                        <div class="flex space-x-2">
+                            <select id="page-status-filter" class="bg-gray-700 text-white rounded px-3 py-1 border border-gray-600">
+                                <option value="all">All Statuses</option>
+                                <option value="published">Published Only</option>
+                                <option value="draft">Drafts Only</option>
+                            </select>
+                            <button id="apply-page-filter-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded transition">
+                                <i class="fas fa-filter"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="export-pages-list" class="space-y-2 max-h-[400px] overflow-y-auto">
+                        <!-- Empty state -->
+                        <div id="empty-export-pages" class="text-center text-gray-400 py-8">
+                            <i class="fas fa-file-export text-4xl mb-4"></i>
+                            <p>No pages available for export. Create pages in the HTML Editor first.</p>
+                        </div>
+                        
+                        <!-- Sample pages (will be populated by JavaScript) -->
+                        <div class="export-page-item bg-gray-700 rounded p-3 border border-gray-600 flex items-center hidden">
+                            <input type="checkbox" class="export-page-checkbox mr-3">
+                            <div class="flex-1">
+                                <div class="flex justify-between items-center">
+                                    <h4 class="font-medium text-blue-400">Recent News</h4>
+                                    <span class="bg-green-900 text-green-200 text-xs px-2 py-1 rounded">Published</span>
+                                </div>
+                                <p class="text-xs text-gray-400">Last edited: May 21, 2025</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="lg:col-span-1">
+            <div class="bg-gray-800 rounded-lg shadow-lg border border-gray-700">
+                <div class="border-b border-gray-700 px-6 py-4">
+                    <h3 class="text-xl font-bold text-blue-400">Export Settings</h3>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-gray-400 text-sm mb-1">Export Format</label>
+                            <select id="export-format" class="w-full bg-gray-700 text-white rounded px-3 py-2 border border-gray-600">
+                                <option value="zip">ZIP Archive</option>
+                                <option value="folder">Folder Structure</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-400 text-sm mb-1">Include Assets</label>
+                            <div class="space-y-2 mt-2">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="include-images" class="mr-2" checked>
+                                    <label for="include-images" class="text-gray-300">Images</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="include-css" class="mr-2" checked>
+                                    <label for="include-css" class="text-gray-300">CSS Files</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="include-js" class="mr-2" checked>
+                                    <label for="include-js" class="text-gray-300">JavaScript Files</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-400 text-sm mb-1">Optimization</label>
+                            <div class="space-y-2 mt-2">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="optimize-images" class="mr-2" checked>
+                                    <label for="optimize-images" class="text-gray-300">Optimize Images</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="minify-html" class="mr-2" checked>
+                                    <label for="minify-html" class="text-gray-300">Minify HTML</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="minify-css" class="mr-2" checked>
+                                    <label for="minify-css" class="text-gray-300">Minify CSS</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="minify-js" class="mr-2" checked>
+                                    <label for="minify-js" class="text-gray-300">Minify JavaScript</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vercel Deployment -->
+            <div class="bg-gray-800 rounded-lg shadow-lg border border-gray-700 mt-6">
+                <div class="border-b border-gray-700 px-6 py-4">
+                    <h3 class="text-xl font-bold text-blue-400">Vercel Deployment</h3>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-300 text-sm mb-4">After exporting, follow these steps to deploy to Vercel:</p>
+                    <ol class="text-gray-300 text-sm space-y-2 list-decimal pl-5">
+                        <li>Download the exported ZIP file</li>
+                        <li>Extract the contents</li>
+                        <li>Use the Vercel CLI or web interface to deploy</li>
+                    </ol>
+                    <div class="mt-4">
+                        <button id="vercel-instructions-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition">
+                            <i class="fas fa-info-circle mr-2"></i> Detailed Instructions
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Export History -->
+    <div class="bg-gray-800 rounded-lg shadow-lg border border-gray-700">
+        <div class="border-b border-gray-700 px-6 py-4 flex justify-between items-center">
+            <h3 class="text-xl font-bold text-blue-400">Export History</h3>
+            <button id="refresh-history-btn" class="text-gray-400 hover:text-blue-400 transition">
+                <i class="fas fa-sync-alt"></i>
+            </button>
+        </div>
+        <div class="p-6">
+            <div id="export-history-list" class="space-y-4">
+                <!-- Empty state -->
+                <div id="empty-export-history" class="text-center text-gray-400 py-8">
+                    <i class="fas fa-history text-4xl mb-4"></i>
+                    <p>No export history yet. Export your pages to see the history.</p>
+                </div>
+                
+                <!-- Sample history items (will be populated by JavaScript) -->
+                <div class="export-history-item bg-gray-700 rounded p-4 border border-gray-600 hidden">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-medium text-blue-400">Export - May 21, 2025, 10:30 AM</h4>
+                            <p class="text-sm text-gray-300 mt-1">5 pages, 12 images, 3 CSS files, 2 JS files</p>
+                            <p class="text-xs text-gray-400 mt-2">Format: ZIP Archive</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="download-export-history-btn bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-1 rounded transition">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <button class="delete-export-history-btn bg-red-600 hover:bg-red-700 text-white text-sm px-3 py-1 rounded transition">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

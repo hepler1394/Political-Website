@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News</title>
+    <meta name="description" content="The latest developments in artificial intelligence and its impacts">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --primary-hover: #2563eb;
+            --secondary-color: #10b981;
+            --secondary-hover: #059669;
+            --accent-color: #8b5cf6;
+            --accent-hover: #7c3aed;
+            --danger-color: #ef4444;
+            --danger-hover: #dc2626;
+            --background-dark: #111827;
+            --background-medium: #1f2937;
+            --background-light: #374151;
+            --text-light: #f3f4f6;
+            --text-medium: #d1d5db;
+            --text-dark: #9ca3af;
+            --border-color: #4b5563;
+        }
+        
+        body {
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        /* Custom scrollbar with red color */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--background-medium);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #ef4444;
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #dc2626;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-gray-800 shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <img src="/static/images/usa_flag.png" alt="USA Flag" class="h-12 w-auto mr-4">
+                    <div>
+                        <h1 class="text-3xl font-bold text-blue-400">AI News</h1>
+                        <p class="text-gray-300">The latest developments in artificial intelligence and its impacts</p>
+                    </div>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="/" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition">
+                        <i class="fas fa-home mr-2"></i> Home
+                    </a>
+                    <a href="/news" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition">
+                        <i class="fas fa-newspaper mr-2"></i> All News
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Featured Article -->
+        {% if False %}
+        <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-700 mb-8">
+            <div class="md:flex">
+                <div class="md:w-1/2">
+                    <img src="{{ featured_article.image }}" alt="{{ featured_article.title }}" class="w-full h-full object-cover">
+                </div>
+                <div class="md:w-1/2 p-6">
+                    <h2 class="text-2xl font-bold text-blue-400 mb-2">{{ featured_article.title }}</h2>
+                    <p class="text-gray-400 mb-4">
+                        <span><i class="fas fa-calendar-alt mr-1"></i> {{ featured_article.date }}</span>
+                    </p>
+                    <p class="text-gray-300 mb-6">{{ featured_article.excerpt }}</p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        {% for tag in featured_article.tags %}
+                        <span class="bg-blue-900 text-blue-200 text-xs px-2 py-1 rounded">{{ tag }}</span>
+                        
+                    </div>
+                    <a href="{{ featured_article.url }}" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition inline-block">
+                        Read Full Article <i class="fas fa-external-link-alt ml-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Articles Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            
+                    <p class="text-gray-400 text-sm mb-2">
+                        <span><i class="fas fa-calendar-alt mr-1"></i> {{ article.date }}</span>
+                    </p>
+                    <p class="text-gray-300 mb-4">{{ article.excerpt }}</p>
+                    <a href="{{ article.url }}" target="_blank" class="text-blue-400 hover:text-blue-300">
+                        Read More <i class="fas fa-external-link-alt ml-1"></i>
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-800 border-t border-gray-700 py-8 mt-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <img src="/static/images/usa_flag.png" alt="USA Flag" class="h-10 w-auto mb-2">
+                    <p class="text-gray-400">Project 2028 - America's Progressive Future</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="/" class="text-gray-400 hover:text-blue-400 transition">
+                        <i class="fas fa-home"></i>
+                    </a>
+                    <a href="/news" class="text-gray-400 hover:text-blue-400 transition">
+                        <i class="fas fa-newspaper"></i>
+                    </a>
+                    <a href="/topics" class="text-gray-400 hover:text-blue-400 transition">
+                        <i class="fas fa-tags"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-6 pt-6 text-center text-gray-400">
+                <p>&copy; 2025 Project 2028. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
