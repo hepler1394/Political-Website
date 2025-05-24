@@ -15,7 +15,7 @@ def format_date(date_string):
     formats_to_try = [
         "%Y-%m-%dT%H:%M:%S.%fZ",  # With microseconds and Z UTC
         "%Y-%m-%dT%H:%M:%SZ",    # Without microseconds and Z UTC
-        "%Y-%m-%dT%H:%M:%S%z",   # With timezone offset
+        "%Y-%m-%dT%H:%M:%S%z",   # With timezone offset (e.g., +00:00)
         "%Y-%m-%dT%H:%M:%S",     # Without timezone (assume UTC)
     ]
     
@@ -23,6 +23,7 @@ def format_date(date_string):
     for fmt in formats_to_try:
         try:
             dt_object = datetime.strptime(date_string, fmt)
+            # If timezone is naive after strptime, assume UTC for consistency
             if dt_object.tzinfo is None or dt_object.tzinfo.utcoffset(dt_object) is None:
                 dt_object = dt_object.replace(tzinfo=timezone.utc)
             break 
@@ -31,12 +32,22 @@ def format_date(date_string):
             
     if dt_object is None:
         try:
-            # More general ISO parsing, handling potential 'Z' for UTC
-            dt_object = datetime.fromisoformat(date_string.replace('Z', '+00:00'))
+            # More general ISO parsing, handling potential 'Z' for UTC by replacing it
+            # This also handles cases where timezone might be missing after 'T'
+            processed_date_string = date_string.replace('Z', '+00:00')
+            if 'T' in processed_date_string and '+' not in processed_date_string.split('T')[-1] and '-' not in processed_date_string.split('T')[-1]:
+                 # If no explicit timezone after T, assume UTC
+                 if '.' in processed_date_string: # handle microseconds
+                      dt_object = datetime.strptime(processed_date_string, "%Y-%m-%dT%H:%M:%S.%f").replace(tzinfo=timezone.utc)
+                 else:
+                      dt_object = datetime.strptime(processed_date_string, "%Y-%m-%dT%H:%M:%S").replace(tzinfo=timezone.utc)
+            else:
+                 dt_object = datetime.fromisoformat(processed_date_string)
+
             if dt_object.tzinfo is None or dt_object.tzinfo.utcoffset(dt_object) is None:
                  dt_object = dt_object.replace(tzinfo=timezone.utc)
         except ValueError:
-            print(f"Warning: Could not parse date string: {date_string}")
+            print(f"Warning: Could not parse date string with any method: {date_string}")
             return "Date N/A"
             
     return dt_object.strftime("%B %d, %Y")
@@ -55,7 +66,6 @@ def generate_news_card_html(article):
     if tags:
         tags_html = '<div class="news-tags">' + ''.join(f'<span class="tag">{html.escape(tag)}</span>' for tag in tags if tag) + '</div>'
 
-    # Added news-meta div for better structure of date and source
     return f"""
             <div class="news-card">
                 <div class="news-image">
@@ -88,7 +98,6 @@ def generate_featured_news_html(article):
     if tags:
         tags_html = '<div class="news-tags">' + ''.join(f'<span class="tag">{html.escape(tag)}</span>' for tag in tags if tag) + '</div>'
     
-    # Added news-meta div for better structure of date and source
     return f"""
             <div class="featured-news-card">
                 <div class="featured-news-image">
@@ -137,16 +146,15 @@ def fetch_thenewsapi_articles(api_token, locale, categories, limit=3):
             if article.get('url') and (article.get('image_url') or article.get('image')):
                 image = article.get('image_url') or article.get('image')
                 source_domain = article.get('source', 'N/A')
-                source_name = "News Source" # Default
+                source_name = "News Source" 
                 if source_domain and isinstance(source_domain, str):
                     source_name = source_domain.replace('www.', '').split('.')[0].capitalize()
                 
                 article_tags = article.get('categories', [])
-                if isinstance(article_tags, list): # Ensure tags are a list
-                    article_tags = [tag.strip().capitalize() for tag in article_tags if isinstance(tag, str)]
+                if isinstance(article_tags, list): 
+                    article_tags = [tag.strip().capitalize() for tag in article_tags if isinstance(tag, str) and tag.strip()]
                 else:
                     article_tags = []
-
 
                 processed_articles.append({
                     'title': article.get('title'),
@@ -155,7 +163,7 @@ def fetch_thenewsapi_articles(api_token, locale, categories, limit=3):
                     'image_url': image,
                     'published_at': article.get('published_at'),
                     'source_name': source_name,
-                    'tags': list(set(article_tags)) # Deduplicate
+                    'tags': list(set(article_tags)) 
                 })
         print(f"TheNewsAPI: {len(processed_articles)} articles after initial processing and filtering.")
         return processed_articles[:limit]
@@ -166,9 +174,8 @@ def fetch_thenewsapi_articles(api_token, locale, categories, limit=3):
         print(f"An unexpected error occurred with TheNewsAPI: {e}")
         return []
 
-
-def fetch_brave_news_articles(api_key, query_categories, country_locale, search_lang='en', limit=10):
-    """Fetches and processes articles from Brave News API."""
+def fetch_brave_news_articles(api_key, query, country_locale, search_lang='en', limit=10):
+    """Fetches and processes articles from Brave News API. Query is the final search string."""
     if not api_key:
         print("Brave News API: Key not provided. Skipping fetch.")
         return []
@@ -179,27 +186,26 @@ def fetch_brave_news_articles(api_key, query_categories, country_locale, search_
         "X-Subscription-Token": api_key
     }
     
-    query = query_categories.replace(',', ' OR ') if query_categories else "latest news"
-    country_code = country_locale.split(',')[0] if country_locale else 'us'
+    country_code = country_locale.split(',')[0].strip() if country_locale else 'us' # Use first country code
 
     params = {
         "q": query,
         "country": country_code,
         "search_lang": search_lang,
-        "freshness": "pd", # Past day for more freshness
+        "freshness": "pd", 
         "text_decorations": "false",
         "spellcheck": "true",
         "count": limit + 10 
     }
-    print(f"Fetching from Brave News API with params: {params}")
+    print(f"Fetching from Brave News API with query: '{query}', country: '{country_code}', limit (fetch): {params['count']}")
     processed_articles = []
     try:
         response = requests.get(brave_api_url, headers=headers, params=params, timeout=15)
         response.raise_for_status()
         results = response.json().get('results', [])
-        print(f"Brave News API returned {len(results)} articles raw.")
+        print(f"Brave News API returned {len(results)} articles raw for query '{query}'.")
         
-        for article_data in results: # Renamed to avoid conflict with outer 'article'
+        for article_data in results:
             if article_data.get('url') and article_data.get('thumbnail', {}).get('src') and article_data.get('title'):
                 source_meta = article_data.get('meta_url', {})
                 source_name = source_meta.get('hostname') if source_meta else article_data.get('profile', {}).get('name')
@@ -208,11 +214,8 @@ def fetch_brave_news_articles(api_key, query_categories, country_locale, search_
                 else:
                     source_name = source_name.replace('www.', '').split('.')[0].capitalize()
 
-                article_tags = []
-                if query_categories: # Prioritize tags from the original query
-                    article_tags = [cat.strip().capitalize() for cat in query_categories.split(',') if cat.strip()]
-                # Brave API sometimes has 'cluster.category' or similar, but it's not consistent.
-                # For now, stick to query categories for Brave.
+                # Derive tags from the original Brave query components
+                article_tags = [t.strip().capitalize() for t in query.split('OR') if t.strip()]
                 
                 processed_articles.append({
                     'title': article_data.get('title'),
@@ -221,86 +224,87 @@ def fetch_brave_news_articles(api_key, query_categories, country_locale, search_
                     'image_url': article_data.get('thumbnail', {}).get('src'),
                     'published_at': article_data.get('date_published'), 
                     'source_name': source_name,
-                    'tags': list(set(article_tags)) # Deduplicate
+                    'tags': list(set(article_tags)) 
                 })
-        print(f"Brave News API: {len(processed_articles)} articles after initial processing and filtering.")
+        print(f"Brave News API: {len(processed_articles)} articles after initial processing and filtering for query '{query}'.")
         return processed_articles[:limit]
     except requests.exceptions.RequestException as e:
-        print(f"Error fetching news from Brave News API: {e}")
+        print(f"Error fetching news from Brave News API for query '{query}': {e}")
         return []
     except Exception as e:
-        print(f"An unexpected error occurred with Brave News API: {e}")
+        print(f"An unexpected error occurred with Brave News API for query '{query}': {e}")
         return []
 
 # --- Main Logic ---
 def main(args):
+    print(f"--- Starting news update for {args.html_file_name} ---")
     load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '.env'))
     thenewsapi_token = os.getenv('NEWS_API_TOKEN')
     brave_api_key = os.getenv('BRAVE_NEWS_API_KEY')
 
-    if not brave_api_key and not thenewsapi_token: # Check if at least one key is present
-        print("Error: No API tokens (BRAVE_NEWS_API_KEY or NEWS_API_TOKEN) found in .env file. Cannot fetch news.")
-        return
-
-    all_articles = []
-    
-    # Prioritize Brave News API
-    if brave_api_key:
-        brave_query = args.api_categories
-        if not brave_query: # Default queries if no categories specified
-            if args.html_file_name == "recent-news.html": brave_query = "US politics, breaking news"
-            elif args.html_file_name == "international-news.html": brave_query = "world news, international relations"
-            elif args.html_file_name == "ai-news.html": brave_query = "artificial intelligence, technology innovations"
-            else: brave_query = "latest news"
-        
-        brave_articles = fetch_brave_news_articles(brave_api_key, brave_query, args.api_locale, limit=args.max_articles)
-        all_articles.extend(brave_articles)
-        print(f"Fetched {len(brave_articles)} articles from Brave News API.")
-
-    # Supplement with TheNewsAPI if needed and token available (max 3 from here)
-    remaining_needed = args.max_articles - len(all_articles)
-    if thenewsapi_token and remaining_needed > 0:
-        thenewsapi_articles = fetch_thenewsapi_articles(thenewsapi_token, args.api_locale, args.api_categories, limit=min(remaining_needed, 3))
-        all_articles.extend(thenewsapi_articles)
-        print(f"Fetched {len(thenewsapi_articles)} articles from TheNewsAPI to supplement.")
-    
-    # Remove duplicates based on URL (preferring earlier entries, e.g., from Brave if it was primary)
-    seen_urls = set()
-    unique_articles = []
-    for article_item in all_articles: # Renamed to avoid conflict
-        if article_item['url'] not in seen_urls:
-            unique_articles.append(article_item)
-            seen_urls.add(article_item['url'])
-    all_articles = unique_articles[:args.max_articles] # Ensure we don't exceed max_articles
-    print(f"Total unique articles after combining, deduplicating, and limiting: {len(all_articles)}")
-
-    featured_article_html = ""
-    regular_news_html_content = ""
-
-    if all_articles:
-        featured_article_html = generate_featured_news_html(all_articles[0])
-        
-        regular_articles_list = []
-        if len(all_articles) > 1:
-            for i in range(1, len(all_articles)): # Iterate through the rest for the grid
-                regular_articles_list.append(generate_news_card_html(all_articles[i]))
-        
-        if regular_articles_list:
-            regular_news_html_content = "".join(regular_articles_list)
-        elif len(all_articles) == 1 : 
-             regular_news_html_content = ""
+    if not brave_api_key and not thenewsapi_token:
+        print("CRITICAL ERROR: No API tokens (BRAVE_NEWS_API_KEY or NEWS_API_TOKEN) found. Cannot fetch news.")
+        # Write placeholder content to clear sections if HTML files are meant to be dynamic
+        featured_article_html = ""
+        regular_news_html_content = ""
+        # Proceed to update HTML to clear it, rather than return early
     else:
-        print("No articles found from any API after filtering to display.")
+        all_articles = []
+        
+        # Prioritize Brave News API
+        if brave_api_key:
+            brave_query_from_args = args.api_categories
+            final_brave_query = ""
+            if brave_query_from_args:
+                final_brave_query = brave_query_from_args.replace(',', ' OR ')
+            else: # Default queries if no categories specified via args
+                if args.html_file_name == "recent-news.html": final_brave_query = "US politics OR breaking news OR top headlines US"
+                elif args.html_file_name == "international-news.html": final_brave_query = "world news OR international relations OR global events"
+                elif args.html_file_name == "ai-news.html": final_brave_query = "artificial intelligence OR technology innovations OR AI research"
+                else: final_brave_query = "latest news OR current events" # Generic fallback
+            
+            brave_articles = fetch_brave_news_articles(brave_api_key, final_brave_query, args.api_locale, limit=args.max_articles)
+            all_articles.extend(brave_articles)
+            print(f"Fetched {len(brave_articles)} articles from Brave News API using query: '{final_brave_query}'.")
 
+        # Supplement with TheNewsAPI if needed and token available (max 3 from here)
+        remaining_needed = args.max_articles - len(all_articles)
+        if thenewsapi_token and remaining_needed > 0:
+            # Use args.api_categories for TheNewsAPI as it's more specific for its category system
+            thenewsapi_articles = fetch_thenewsapi_articles(thenewsapi_token, args.api_locale, args.api_categories, limit=min(remaining_needed, 3))
+            all_articles.extend(thenewsapi_articles)
+            print(f"Fetched {len(thenewsapi_articles)} articles from TheNewsAPI to supplement.")
+        
+        seen_urls = set()
+        unique_articles = []
+        for article_item in all_articles: 
+            if article_item.get('url') and article_item['url'] not in seen_urls: # Check for URL existence
+                unique_articles.append(article_item)
+                seen_urls.add(article_item['url'])
+        all_articles = unique_articles[:args.max_articles] 
+        print(f"Total unique articles to display: {len(all_articles)}")
+
+        if all_articles:
+            featured_article_html = generate_featured_news_html(all_articles[0])
+            regular_news_html_content = "" # Default to empty if only one article
+            if len(all_articles) > 1:
+                regular_articles_list = [generate_news_card_html(all_articles[i]) for i in range(1, len(all_articles))]
+                regular_news_html_content = "".join(regular_articles_list)
+        else:
+            print("No articles found from any API after filtering to display for this page.")
+            featured_article_html = ""
+            regular_news_html_content = ""
+
+    # Read HTML file
     html_file_path = os.path.join(os.path.dirname(__file__), '..', args.html_file_name)
     try:
         with open(html_file_path, 'r', encoding='utf-8') as f:
             html_content = f.read()
     except FileNotFoundError:
-        print(f"Error: HTML file {html_file_path} not found.")
+        print(f"CRITICAL ERROR: HTML file {html_file_path} not found. Cannot update.")
         return
     except Exception as e:
-        print(f"Error reading {html_file_path}: {e}")
+        print(f"CRITICAL ERROR reading {html_file_path}: {e}")
         return
         
     updated_html_content = html_content
@@ -312,10 +316,9 @@ def main(args):
         pattern_featured = rf'(<div\s+[^>]*id="{re.escape(div_id)}"[^>]*>)(.*?)(</div>)'
     elif args.featured_div_identifier.startswith('.'):
         div_class = args.featured_div_identifier[1:]
-        # More specific: find the first div that *contains* the class, not just starts with it.
         pattern_featured = rf'(<div\s+[^>]*class="[^"]*\b{re.escape(div_class)}\b[^"]*"[^>]*>)(.*?)(</div>)'
     else:
-        print(f"ERROR: Invalid featured_div_identifier: {args.featured_div_identifier}. Must start with # or .")
+        print(f"ERROR: Invalid featured_div_identifier: {args.featured_div_identifier} for {args.html_file_name}. Must start with # or .")
         pattern_featured = None
 
     if pattern_featured:
@@ -323,14 +326,14 @@ def main(args):
         if match_featured:
             replacement_featured = f'{match_featured.group(1)}{featured_article_html.strip()}{match_featured.group(3)}'
             updated_html_content = re.sub(pattern_featured, replacement_featured, updated_html_content, count=1, flags=re.DOTALL)
-            print(f"Successfully updated featured news section: {args.featured_div_identifier}")
+            print(f"Successfully updated featured news section: {args.featured_div_identifier} in {args.html_file_name}")
         else:
             print(f"ERROR: Did not find featured news div matching identifier: {args.featured_div_identifier} in {args.html_file_name}")
     else:
          print(f"Skipping featured news update for {args.html_file_name} due to invalid identifier.")
 
     # Update regular news grid section
-    pattern_grid = r'(<div\s+class="news-grid"\s*[^>]*>)(.*?)(</div>)' # Made class matching more flexible
+    pattern_grid = r'(<div\s+class="news-grid"\s*[^>]*>)(.*?)(</div>)' 
     match_grid = re.search(pattern_grid, updated_html_content, re.DOTALL)
     if match_grid:
         replacement_grid = f'{match_grid.group(1)}{regular_news_html_content.strip()}{match_grid.group(3)}'
@@ -344,13 +347,14 @@ def main(args):
             f.write(updated_html_content)
         print(f"Successfully wrote updates to {args.html_file_name}.")
     except Exception as e:
-        print(f"Error writing updated content to {html_file_path}: {e}")
+        print(f"CRITICAL ERROR writing updated content to {html_file_path}: {e}")
+    print(f"--- Finished news update for {args.html_file_name} ---")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Update HTML file with news from Brave News API and TheNewsAPI.")
     parser.add_argument('--html_file_name', type=str, required=True, help='Name of the HTML file to update.')
     parser.add_argument('--api_locale', type=str, default="us", help='Comma-separated primary locale(s) for news APIs (e.g., "us", "gb,ca"). Brave uses the first one.')
-    parser.add_argument('--api_categories', type=str, default="", help='Comma-separated categories/query terms (e.g., "politics,technology"). Used as query for Brave.')
+    parser.add_argument('--api_categories', type=str, default="", help='Comma-separated categories/query terms (e.g., "politics,technology"). Used as query for Brave, and categories for TheNewsAPI.')
     parser.add_argument('--featured_div_identifier', type=str, required=True, help='CSS Selector for the featured news div (e.g., "#smart-grid" or ".featured-news").')
     parser.add_argument('--max_articles', type=int, default=10, help='Total number of articles to display (1 featured + N-1 grid).')
     
