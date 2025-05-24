@@ -1,9 +1,9 @@
-name: Update News Articles
+name: Update News Articles (Brave API)
 
 on:
   schedule:
-    # Runs every day at 00:00 UTC (adjust as needed)
-    - cron: '0 0 * * *'
+    # Runs every 6 hours (adjust as needed)
+    - cron: '0 */6 * * *'
   workflow_dispatch: # Allows manual triggering from the Actions tab
 
 jobs:
@@ -18,47 +18,43 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x' # Use a recent Python 3 version
+          python-version: '3.x'
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install requests python-dotenv
 
-      - name: Run script for US Political News (recent-news.html)
+      - name: Run script for Recent News
         env:
-          NEWS_API_TOKEN: ${{ secrets.NEWS_API_TOKEN }}
           BRAVE_NEWS_API_KEY: ${{ secrets.BRAVE_NEWS_API_KEY }}
-          # GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }} # Available if script needs it later
         run: |
           python scripts/update_news.py \
             --html_file_name "recent-news.html" \
+            --query "recent political news" \
             --api_locale "us" \
-            --api_categories "politics,us news,breaking news,top headlines US" \
             --featured_div_identifier "#smart-grid" \
             --max_articles 10
 
-      - name: Run script for International News (international-news.html)
+      - name: Run script for International News
         env:
-          NEWS_API_TOKEN: ${{ secrets.NEWS_API_TOKEN }}
           BRAVE_NEWS_API_KEY: ${{ secrets.BRAVE_NEWS_API_KEY }}
         run: |
           python scripts/update_news.py \
             --html_file_name "international-news.html" \
-            --api_locale "gb,ca,au,de,fr,jp" \
-            --api_categories "world news,international relations,global events" \
+            --query "international news" \
+            --api_locale "gb,ca,au" \
             --featured_div_identifier ".featured-news" \
             --max_articles 10
             
-      - name: Run script for AI News (ai-news.html)
+      - name: Run script for AI News
         env:
-          NEWS_API_TOKEN: ${{ secrets.NEWS_API_TOKEN }}
           BRAVE_NEWS_API_KEY: ${{ secrets.BRAVE_NEWS_API_KEY }}
         run: |
           python scripts/update_news.py \
             --html_file_name "ai-news.html" \
+            --query "recent ai news" \
             --api_locale "us,gb" \
-            --api_categories "technology,artificial intelligence,AI,AI research" \
             --featured_div_identifier ".featured-news" \
             --max_articles 10
 
@@ -67,9 +63,8 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add recent-news.html international-news.html ai-news.html
-          # Check if there are changes to commit
           if ! git diff --staged --quiet; then
-            git commit -m "Automated news update for recent, international, and AI news"
+            git commit -m "Automated news update via Brave API"
             git push
           else
             echo "No changes to commit for news files."
