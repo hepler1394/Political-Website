@@ -12,10 +12,9 @@
     <div class="noise-overlay"></div>
     <div class="scan-line"></div>
     
-    <!-- Preloader -->
     <div class="preloader">
         <div class="preloader-content">
-            <img src="project_2028_logo.png" alt="Project 2028 Logo" class="preloader-logo">
+            <img src="project_2028_logo.png" alt="Project 2028 Logo" class="preloader-logo" onerror="this.onerror=null;this.src='https://placehold.co/150x50/003366/FFFFFF?text=P2028Logo';">
             <div class="loading-bar-container">
                 <div class="loading-bar"></div>
             </div>
@@ -23,12 +22,11 @@
         </div>
     </div>
 
-    <!-- Navigation -->
     <nav class="main-nav">
         <div class="nav-container">
             <div class="logo">
                 <a href="index.html">
-                    <img src="project_2028_logo.png" alt="Project 2028 Logo">
+                    <img src="project_2028_logo.png" alt="Project 2028 Logo" onerror="this.onerror=null;this.src='https://placehold.co/100x40/003366/FFFFFF?text=P2028';">
                 </a>
             </div>
             <div class="menu-toggle">
@@ -54,26 +52,24 @@
         </div>
     </nav>
 
-    <!-- Page Header -->
     <section class="page-header">
         <div class="page-header-content">
             <h1>International <span class="highlight">News</span></h1>
             <p>Global developments shaping our progressive future</p>
         </div>
         <div class="page-header-image">
-            <img src="international_news_icon.png" alt="International News">
+            <img src="international_news_icon.png" alt="International News" onerror="this.onerror=null;this.src='https://placehold.co/150x150/00a8ff/FFFFFF?text=News';">
         </div>
     </section>
 
-    <!-- News Content -->
     <section class="news-page">
         <div class="news-filters">
             <div class="search-bar">
-                <input type="text" placeholder="Search international news...">
-                <button><i class="fas fa-search"></i></button>
+                <input type="text" placeholder="Search international news..." id="internationalNewsSearchInput">
+                <button id="internationalNewsSearchButton"><i class="fas fa-search"></i></button>
             </div>
             <div class="filter-options">
-                <select name="region">
+                <select name="region" id="internationalNewsRegionFilter">
                     <option value="all">All Regions</option>
                     <option value="europe">Europe</option>
                     <option value="asia">Asia</option>
@@ -81,172 +77,30 @@
                     <option value="americas">Americas</option>
                     <option value="oceania">Oceania</option>
                 </select>
-                <select name="category">
+                <select name="category" id="internationalNewsCategoryFilter">
                     <option value="all">All Categories</option>
                     <option value="climate">Climate</option>
                     <option value="democracy">Democracy</option>
                     <option value="economy">Economy</option>
                     <option value="diplomacy">Diplomacy</option>
                 </select>
-                <select name="date">
+                <select name="date" id="internationalNewsDateFilter">
                     <option value="newest">Newest First</option>
                     <option value="oldest">Oldest First</option>
                 </select>
             </div>
         </div>
 
-        <div class="featured-news"><div class="featured-news-card">
-                <div class="featured-news-image">
-                    <div class="news-tag">Featured</div>
-                    <img src="https://i.cbc.ca/1.7316226.1725658112!/fileImage/httpImage/image.JPG_gen/derivatives/16x9_1180/main-street-project-van.JPG?im=Resize%3D620" alt="Point Douglas group has 'serious concern' after non-profit agency helps set up homeless camp">
-                </div>
-                <div class="featured-news-content">
-                    <div class="news-date">May 23, 2025</div>
-                    <h2>Point Douglas group has 'serious concern' after non-profit agency helps set up homeless camp</h2>
-                    <p class="news-excerpt">A residents' group is accusing a long-standing Winnipeg community health agency of helping to set up a homeless camp in Point Douglas.</p>
-                    <a href="https://www.cbc.ca/news/canada/manitoba/point-douglas-main-street-project-homeless-encampment-winnipeg-1.7541879?cmp=rss" class="btn btn-primary news-more" target="_blank" rel="noopener noreferrer">Read Full Story</a>
-                </div>
-            </div></div>
-                    <img src="https://via.placeholder.com/800x500/0a1128/00a8ff?text=Global+Climate+Summit" alt="Global Climate Summit">
-                </div>
-                <div class="featured-news-content">
-                    <div class="news-date">May 18, 2028</div>
-                    <h2>Global Climate Summit Achieves Historic Carbon Reduction Agreement</h2>
-                    <p class="news-excerpt">195 nations commit to binding emissions targets and $3 trillion climate fund for developing countries.</p>
-                    <p>The 2028 Global Climate Summit concluded today in Nairobi with a landmark agreement that climate experts are calling "the most significant environmental accord in human history." After two weeks of intensive negotiations, all 195 participating nations unanimously approved the Nairobi Protocol, which establishes legally binding carbon reduction targets and creates a $3 trillion climate adaptation and mitigation fund for developing nations.</p>
-                    <p>Key provisions of the agreement include:</p>
-                    <ul>
-                        <li>50% global emissions reduction by 2035 (from 2020 levels)</li>
-                        <li>Net-zero emissions by all nations by 2045</li>
-                        <li>$3 trillion climate fund with contributions proportional to historical emissions</li>
-                        <li>Global carbon pricing mechanism with revenue sharing</li>
-                        <li>Technology transfer provisions for clean energy deployment</li>
-                    </ul>
-                    <p>"This agreement represents a fundamental shift in how the world approaches climate action," said Summit Chair Dr. Amara Okafor. "For the first time, we have binding commitments from all nations, adequate financing for developing countries, and mechanisms to ensure accountability."</p>
-                    <div class="news-tags">
-                        <span class="tag">Climate</span>
-                        <span class="tag">Diplomacy</span>
-                        <span class="tag">Africa</span>
-                        <span class="tag">Global</span>
-                    </div>
-                    <div class="news-share">
-                        <span>Share:</span>
-                        <a href="#" class="share-icon"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="share-icon"><i class="fab fa-facebook"></i></a>
-                        <a href="#" class="share-icon"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="share-icon"><i class="fab fa-envelope"></i></a>
-                    </div>
-                </div>
+        <div class="featured-news"> 
             </div>
-        </div>
 
-        <div class="news-grid"><div class="news-card">
-                <div class="news-image">
-                    <img src="https://i.cbc.ca/1.7167299.1712608495!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_1180/montreal-eclipse-watchers.jpg?im=Resize%3D620" alt="CBC journalists in Quebec earn RTDNA nominations for work in 2024">
-                </div>
-                <div class="news-info">
-                    <div class="news-date">May 23, 2025</div>
-                    <h3>CBC journalists in Quebec earn RTDNA nominations for work in 2024</h3>
-                    <p>Journalists from CBC Quebec have received a total of 20 award nominations for their work in 2024 from the Radio Television Digital News Association (RTDNA) Cana...</p>
-                    <a href="https://www.cbc.ca/news/canada/montreal/cbc-journalists-quebec-1.7542610?cmp=rss" class="news-more" target="_blank">Read Full Article</a>
-                </div>
+        <div class="news-grid">
             </div>
-    
-            <div class="news-card">
-                <div class="news-image">
-                    <img src="https://www.sportsnet.ca/wp-content/uploads/2025/05/CP174231099.jpg" alt="Prospect of Interest: Athletics recall Canadian outfielder Denzel Clarke">
-                </div>
-                <div class="news-info">
-                    <div class="news-date">May 23, 2025</div>
-                    <h3>Prospect of Interest: Athletics recall Canadian outfielder Denzel Clarke</h3>
-                    <p>In need of a spark, the Athletics are turning to one of the best athletes in the minor leagues by calling up Canadian outfielder Denzel Clarke.
 
-Zach Worden bre...</p>
-                    <a href="https://www.sportsnet.ca/mlb/article/prospect-of-interest-athletics-recall-canadian-outfielder-denzel-clarke/" class="news-more" target="_blank">Read Full Article</a>
-                </div>
-            </div></div>
-                <div class="news-info">
-                    <div class="news-date">May 16, 2028</div>
-                    <h3>European Union Launches Digital Democracy Platform</h3>
-                    <p>Revolutionary system allows direct citizen participation in EU legislative process.</p>
-                    <p>The European Union officially launched its Digital Democracy Platform today, a groundbreaking system that allows EU citizens to directly participate in the legislative process. The blockchain-based platform enables citizens to propose legislation, vote on pending bills, and engage with representatives in real-time. In its first day of operation, over 5 million Europeans registered on the platform and submitted more than 10,000 legislative proposals.</p>
-                    <a href="#" class="news-more">Read Full Article</a>
-                </div>
+        <div class="pagination" id="internationalNewsPagination">
             </div>
-            <div class="news-card">
-                <div class="news-image">
-                    <img src="https://via.placeholder.com/400x300/0a1128/00a8ff?text=African+Union" alt="African Union">
-                </div>
-                <div class="news-info">
-                    <div class="news-date">May 14, 2028</div>
-                    <h3>African Union Completes Continental Free Trade Implementation</h3>
-                    <p>Historic economic integration creates world's largest free trade area with 1.5 billion people.</p>
-                    <p>The African Union announced today the full implementation of the African Continental Free Trade Area (AfCFTA), creating the world's largest free trade zone encompassing 1.5 billion people across 55 countries. The final phase of implementation removed all remaining tariffs and trade barriers, established a common digital currency for cross-border transactions, and launched a continent-wide digital identification system to facilitate movement of people and goods.</p>
-                    <a href="#" class="news-more">Read Full Article</a>
-                </div>
-            </div>
-            <div class="news-card">
-                <div class="news-image">
-                    <img src="https://via.placeholder.com/400x300/0a1128/00a8ff?text=Asia+Renewable" alt="Asia Renewable">
-                </div>
-                <div class="news-info">
-                    <div class="news-date">May 12, 2028</div>
-                    <h3>Asian Renewable Energy Supergrid Connects 12 Nations</h3>
-                    <p>Massive infrastructure project links renewable resources across continent.</p>
-                    <p>The Asian Renewable Energy Supergrid officially went online today, connecting the power grids of 12 nations from India to Japan in the world's largest international energy network. The $500 billion infrastructure project, which has been under construction for seven years, allows renewable energy to flow seamlessly across borders, balancing supply and demand across different time zones and weather patterns. The system is expected to accelerate the region's transition to 100% renewable energy by 2035.</p>
-                    <a href="#" class="news-more">Read Full Article</a>
-                </div>
-            </div>
-            <div class="news-card">
-                <div class="news-image">
-                    <img src="https://via.placeholder.com/400x300/0a1128/00a8ff?text=Latin+America" alt="Latin America">
-                </div>
-                <div class="news-info">
-                    <div class="news-date">May 10, 2028</div>
-                    <h3>Latin American Nations Launch Regional Universal Basic Income</h3>
-                    <p>Groundbreaking economic program covers 300 million people across 8 countries.</p>
-                    <p>Eight Latin American nations today launched the world's first regional Universal Basic Income program, providing monthly payments to all 300 million citizens regardless of employment status. The program, funded by a combination of natural resource revenues, financial transaction taxes, and carbon pricing, provides payments equivalent to 40% of each country's median income. Early data from pilot programs showed significant reductions in poverty and inequality while stimulating local economic growth.</p>
-                    <a href="#" class="news-more">Read Full Article</a>
-                </div>
-            </div>
-            <div class="news-card">
-                <div class="news-image">
-                    <img src="https://via.placeholder.com/400x300/0a1128/00a8ff?text=Global+Health" alt="Global Health">
-                </div>
-                <div class="news-info">
-                    <div class="news-date">May 8, 2028</div>
-                    <h3>World Health Organization Declares Victory Over Malaria</h3>
-                    <p>Historic public health achievement as global eradication campaign succeeds.</p>
-                    <p>The World Health Organization officially declared malaria eradicated today, marking the end of a disease that once killed over 400,000 people annually. The successful global campaign combined next-generation vaccines, gene drive technology to modify mosquito populations, and community-based healthcare initiatives. The 15-year eradication effort is estimated to have saved over 4 million lives and will prevent an estimated 200 million cases of illness annually.</p>
-                    <a href="#" class="news-more">Read Full Article</a>
-                </div>
-            </div>
-            <div class="news-card">
-                <div class="news-image">
-                    <img src="https://via.placeholder.com/400x300/0a1128/00a8ff?text=Ocean+Treaty" alt="Ocean Treaty">
-                </div>
-                <div class="news-info">
-                    <div class="news-date">May 6, 2028</div>
-                    <h3>Global Ocean Protection Treaty Reaches 50% Conservation Milestone</h3>
-                    <p>International effort has now protected half of world's oceans in marine reserves.</p>
-                    <p>The United Nations Ocean Protection Authority announced today that 50% of the world's oceans are now protected in marine reserves under the Global Ocean Treaty, reaching the target three years ahead of schedule. The protected areas, which prohibit commercial fishing, mining, and other extractive activities, have shown remarkable ecological recovery, with fish populations increasing by an average of 40% and coral reef health improving by 35% in the oldest reserves.</p>
-                    <a href="#" class="news-more">Read Full Article</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="pagination">
-            <a href="#" class="pagination-arrow disabled"><i class="fas fa-chevron-left"></i></a>
-            <a href="#" class="pagination-number active">1</a>
-            <a href="#" class="pagination-number">2</a>
-            <a href="#" class="pagination-number">3</a>
-            <span class="pagination-ellipsis">...</span>
-            <a href="#" class="pagination-number">15</a>
-            <a href="#" class="pagination-arrow"><i class="fas fa-chevron-right"></i></a>
-        </div>
     </section>
 
-    <!-- Newsletter Section -->
     <section class="newsletter">
         <div class="newsletter-content">
             <div class="newsletter-text">
@@ -260,11 +114,10 @@ Zach Worden bre...</p>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="main-footer">
         <div class="footer-content">
             <div class="footer-logo">
-                <img src="project_2028_logo.png" alt="Project 2028 Logo">
+                <img src="project_2028_logo.png" alt="Project 2028 Logo" onerror="this.onerror=null;this.src='https://placehold.co/100x40/003366/FFFFFF?text=P2028';">
                 <p>Project 2028</p>
             </div>
             <div class="footer-links">
@@ -317,7 +170,6 @@ Zach Worden bre...</p>
         </div>
     </footer>
 
-    <!-- Floating Action Button -->
     <div class="fab">
         <button class="fab-button">
             <i class="fas fa-plus"></i>
@@ -335,7 +187,6 @@ Zach Worden bre...</p>
         </div>
     </div>
 
-    <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
     <script src="scripts.js"></script>
